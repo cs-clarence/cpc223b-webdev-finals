@@ -2,15 +2,24 @@
 <html lang="en">
 <head>
   <title>Owner</title>
-  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="css/normalize.css">
+  <style>
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
 </head>
 
 <body>
 <form>
-  <label>Date
-    <input type="datetime-local" autofocus/>
-  </label>
-  <button>search</button>
+  <div>
+    <label>
+      Date
+      <input type="datetime-local" autofocus/>
+    </label>
+    <button>search</button>
+  </div>
   <label>Total Number of Customer
     <input type="number" value="0" readonly/>
   </label>
