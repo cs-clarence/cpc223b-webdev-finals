@@ -1,0 +1,26 @@
+table {
+  background-color: var(--surface-color);
+  padding: 32px;
+  height: min-content;
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--outline-color);
+  border-radius: 8px;
+}
+
+tr {
+  height: 42px;
+}
+
+th, td {
+  padding-inline: 16px;
+  text-align: center;
+}
+
+table > thead > tr {
+  background-color: var(--primary-color);
+}
+
+table > tbody > tr:nth-child(2n) {
+  background-color: var(--surface-color-variant);
+}

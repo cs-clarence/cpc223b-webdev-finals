@@ -1,0 +1,16 @@
+:root {
+  --surface-color: rgb(197, 197, 248);
+  --surface-color-variant: rgb(214, 214, 255);
+  --background-color: rgb(227, 227, 254);
+  --neutral-color: rgb(240, 236, 255);
+  --outline-color: rgb(40, 20, 113);
+
+  --primary-color: rgb(181, 164, 255);
+  --secondary-color: rgb(248, 78, 78);
+  --error-color: rgb(255, 0, 0);
+
+  --button-color-positive: rgb(151, 255, 184);
+  --button-color-negative: var(--error-color);
+  --button-color-neutral: var(--primary-color);
+
+}

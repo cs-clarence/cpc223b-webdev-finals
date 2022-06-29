@@ -285,3 +285,9 @@ html, body {
   height: 100%;
   width: 100%;
 }
+
+a, a:active, a:visited {
+  text-underline: none;
+  text-decoration: none;
+  vertical-align: center;
+}

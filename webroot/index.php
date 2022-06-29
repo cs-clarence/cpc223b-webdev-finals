@@ -1,30 +1,45 @@
-<?php
-require_once "../util/util.php";
-
-list($user, $customer) = establish_user();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Index</title>
-  <link rel="stylesheet" href="css/normalize.css">
+  <title>Carwash</title>
+  <link rel="stylesheet" href="css/base.css">
+  <style>
+    ul {
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+    }
+    ul > li {
+      list-style: none;
+      text-transform: uppercase;
+      font-size: 1.5rem;
+      font-weight: bold;
+      background-color: transparent;
+      border-radius: 16px;
+      padding: 16px;
+      transform: scale(100%);
+      transition: transform 150ms ease-in-out, background-color 150ms ease-in-out;
+    }
+
+    ul > li:hover {
+      background-color: var(--primary-color);
+      transform: scale(115%);
+    }
+  </style>
 </head>
 
 <body>
-<nav>
-  <p>Hello <?php echo $customer->full_name ?>!</p>
+<h1>CARWASH</h1>
+<nav class="card">
   <ul>
-    <?php if ($user->is_cashier || $user->is_owner) { ?>
-      <li><a href="cashier.php">Cashier</a></li>
-    <?php } ?>
-    <?php if ($user->is_owner) { ?>
-      <li><a href="owner.php">Owner</a></li>
-    <?php } ?>
-    <li><a href="settings.php">Settings</a></li>
-    <li><a href="services.php">Services</a></li>
-    <li><a href="logout.php">Logout</a></li>
+    <li><a href="cashier.php" class="inherit-color">Cashier</a></li>
+    <li><a href="owner.php" class="inherit-color">Owner</a></li>
+    <li><a href="settings.php" class="inherit-color">Settings</a></li>
   </ul>
 </nav>
 </body>
+
+<script src="js/trigger-anchor-on-click.js"></script>
 </html>

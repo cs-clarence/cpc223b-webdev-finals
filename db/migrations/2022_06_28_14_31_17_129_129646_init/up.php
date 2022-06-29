@@ -2,31 +2,26 @@
 $up_sql = <<< SQL
 CREATE TABLE services (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  service_name VARCHAR(255) NOT NULL,
-  price DOUBLE NOT NULL
+  name VARCHAR(255) NOT NULL,
+  fee DOUBLE NOT NULL
 );
 
-CREATE TABLE users (
+CREATE TABLE service_for_customers (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  email VARCHAR(256) UNIQUE NOT NULL,
-  password VARCHAR(256) NOT NULL,
-  is_owner BOOL NOT NULL DEFAULT FALSE,
-  is_cashier BOOL NOT NULL DEFAULT FALSE
+  customer_name TEXT NOT NULL,
+  service TEXT NOT NULL,
+  car_type TEXT NOT NULL,
+  cash DOUBLE NOT NULL,
+  charge DOUBLE NOT NULL,
+  tip DOUBLE NOT NULL,
+  date TEXT NOT NULL,
+  time TEXT NOT NULL
 );
 
-CREATE TABLE customers (
+CREATE TABLE initials (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  user_id BIGINT REFERENCES users(id),
-  full_name TEXT NOT NULL,
-  cash DOUBLE NOT NULL DEFAULT 0
-);
-
-CREATE TABLE services_for_customers (
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  customer_id  BIGINT REFERENCES customers(id),
-  service_id BIGINT REFERENCES services(id),
-  date_posted DATE NOT NULL DEFAULT NOW(),
-  time_posted DATE NOT NULL DEFAULT NOW()
+  cash DOUBLE NOT NULL,
+  date VARCHAR(32) UNIQUE NOT NULL 
 );
 SQL;
 
