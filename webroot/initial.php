@@ -19,7 +19,7 @@ if (isset($_POST["date"]) && isset($_POST["cash"])) {
   if ($edit_id !== null) {
     if ($initial->date === $date || !InitialRepository::is_date_used($date)) {
       InitialRepository::update($edit_id, $cash, $date);
-      header("Location: /initial.php");
+      header("Location: initial.php");
       exit();
     } else {
       $errors[] = "Date is already used, you can only set the date to the original date or one that isn't already used.";
@@ -31,7 +31,7 @@ if (isset($_POST["date"]) && isset($_POST["cash"])) {
     } else {
       InitialRepository::insert($cash, $date);
 
-      header("Location: /initial.php");
+      header("Location: initial.php");
       exit();
     }
   }
@@ -42,7 +42,7 @@ if (isset($_GET["delete"])) {
 
   InitialRepository::delete_by_id($delete_id);
 
-  header("Location: /initial.php");
+  header("Location: index.php");
   exit();
 }
 

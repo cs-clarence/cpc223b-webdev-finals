@@ -33,7 +33,7 @@ $errors = [];
 if (isset($_GET["delete"])) {
   $delete_id = $_GET["delete"];
   ServiceForCustomerRepository::delete_by_id($delete_id);
-  header("Location: /cashier.php");
+  header("Location: cashier.php");
   exit();
 }
 
@@ -67,7 +67,7 @@ if (
       $charge,
       $tip
     );
-    header("Location: /cashier.php");
+    header("Location: cashier.php");
     exit();
   }
 }

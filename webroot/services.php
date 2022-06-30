@@ -23,7 +23,7 @@ if (isset($_POST["name"]) && isset($_POST["fee"])) {
 
   if ($edit_id !== null) {
     ServiceRepository::update($edit_id, $name, $fee);
-    header("Location: /services.php");
+    header("Location: services.php");
     exit();
   } else {
     ServiceRepository::insert($name, $fee);
