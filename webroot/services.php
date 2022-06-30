@@ -76,8 +76,7 @@ $services = ServiceRepository::get_all();
         <th>ID</th>
         <th>Name</th>
         <th>Fee</th>
-        <th></th>
-        <th></th>
+        <th colspan="2">Action</th>
       </tr>
       </thead>
 

@@ -30,6 +30,13 @@ $car_types =
 
 $errors = [];
 
+if (isset($_GET["delete"])) {
+  $delete_id = $_GET["delete"];
+  ServiceForCustomerRepository::delete_by_id($delete_id);
+  header("Location: /cashier.php");
+  exit();
+}
+
 if (
   isset($_POST["customer_name"])
   && isset($_POST["car_type"])
@@ -86,6 +93,7 @@ $initial_service_fee = null;
   <?php if (count($services) > 0) { ?>
     <form method="post">
       <h2>CASHIER</h2>
+      <h3><?php echo date("F j, Y") ?></h3>
       <label>Customer<input type="text" name="customer_name"
                             value="<?php echo $customer_name ?? "" ?>"
                             required/></label>
@@ -104,8 +112,7 @@ $initial_service_fee = null;
             <option value="<?php echo $service->id ?>">
               <?php
               if ($initial_service_fee === null) {
-                $initial_service_fee =
-                  $service->fee;
+                $initial_service_fee = $service->fee;
               }
               echo "$service->name - PHP $service->fee"
               ?>
@@ -154,6 +161,7 @@ $initial_service_fee = null;
           <th>Total</th>
           <th>Cash</th>
           <th>Change</th>
+          <th>Action</th>
         </tr>
         </thead>
         <tbody>
@@ -168,6 +176,7 @@ $initial_service_fee = null;
             <td><?php echo($sfc->tip + $sfc->charge) ?></td>
             <td><?php echo $sfc->cash ?></td>
             <td><?php echo($sfc->cash - ($sfc->tip + $sfc->charge)) ?></td>
+            <td><a href="?delete=<?php echo $sfc->id ?>">DELETE</a></td>
           </tr>
         <?php } ?>
         </tbody>

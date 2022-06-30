@@ -40,7 +40,7 @@ final class ServiceRepository {
   public static function find_by_id(int $id): ?Service {
     $stmt = self::$connection->prepare("SELECT * FROM services WHERE id = :id");
     $stmt->setFetchMode(PDO::FETCH_CLASS, Service::class);
-    $stmt->execute(["id"=>$id]);
+    $stmt->execute(["id" => $id]);
     $result = $stmt->fetch();
 
     if (!$result) return null;
@@ -132,34 +132,54 @@ final class ServiceForCustomerRepository {
         "charge" => $charge,
         "car_type" => $car_type,
         "tip" => $tip,
-        "date"=> $date_time->format("Y-m-d"),
-        "time"=> $date_time->format("H-i-s"),
+        "date" => $date_time->format("Y-m-d"),
+        "time" => $date_time->format("H-i-s"),
       ]
     );
   }
 
   public static function date_has_entry(string $date): bool {
-    $stmt = self::$connection->prepare("SELECT COUNT(*) FROM service_for_customers WHERE date = :date");
-    $stmt->execute(["date"=>$date]);
+    $stmt =
+      self::$connection->prepare(
+        "SELECT COUNT(*) FROM service_for_customers WHERE date = :date"
+      );
+    $stmt->execute(["date" => $date]);
     return $stmt->fetchColumn() > 0;
   }
 
   public static function total_number_of_customer_for_date(string $date): int {
-    $stmt = self::$connection->prepare("SELECT COUNT(customer_name) FROM service_for_customers WHERE date = :date");
-    $stmt->execute(["date"=>$date]);
+    $stmt =
+      self::$connection->prepare(
+        "SELECT COUNT(customer_name) FROM service_for_customers WHERE date = :date"
+      );
+    $stmt->execute(["date" => $date]);
     return $stmt->fetchColumn();
   }
 
   public static function total_income_earned_for_date(string $date): float {
-    $stmt = self::$connection->prepare("SELECT SUM(charge + tip) FROM service_for_customers WHERE date = :date");
-    $stmt->execute(["date"=>$date]);
+    $stmt =
+      self::$connection->prepare(
+        "SELECT SUM(charge + tip) FROM service_for_customers WHERE date = :date"
+      );
+    $stmt->execute(["date" => $date]);
     return $stmt->fetchColumn();
   }
 
   public static function total_income_earned(): float {
-    $stmt = self::$connection->prepare("SELECT SUM(charge + tip) FROM service_for_customers");
+    $stmt =
+      self::$connection->prepare(
+        "SELECT SUM(charge + tip) FROM service_for_customers"
+      );
     $stmt->execute();
     return $stmt->fetchColumn();
+  }
+
+  public static function delete_by_id(int $id): void {
+    $stmt =
+      self::$connection->prepare(
+        "DELETE FROM service_for_customers WHERE id = :id"
+      );
+    $stmt->execute(["id" => $id]);
   }
 }
 
@@ -183,8 +203,11 @@ class InitialRepository {
   }
 
   public static function insert(float $cash, string $date): void {
-    $stmt = self::$connection->prepare("INSERT INTO initials(date, cash) VALUES (:date, :cash)");
-    $stmt->execute(["date"=>$date, "cash"=>$cash]);
+    $stmt =
+      self::$connection->prepare(
+        "INSERT INTO initials(date, cash) VALUES (:date, :cash)"
+      );
+    $stmt->execute(["date" => $date, "cash" => $cash]);
   }
 
   public static function is_date_used(string $date): bool {
@@ -192,9 +215,22 @@ class InitialRepository {
   }
 
   public static function find_by_date(string $date): ?Initial {
-    $stmt = self::$connection->prepare("SELECT * FROM initials WHERE date = :date");
+    $stmt =
+      self::$connection->prepare("SELECT * FROM initials WHERE date = :date");
     $stmt->setFetchMode(PDO::FETCH_CLASS, Initial::class);
-    $stmt->execute(["date"=>$date]);
+    $stmt->execute(["date" => $date]);
+    $result = $stmt->fetch(PDO::FETCH_CLASS);
+
+    if (!$result) return null;
+
+    return $result;
+  }
+
+  public static function find_by_id(int $id): ?Initial {
+    $stmt =
+      self::$connection->prepare("SELECT * FROM initials WHERE id = :id");
+    $stmt->setFetchMode(PDO::FETCH_CLASS, Initial::class);
+    $stmt->execute(["id" => $id]);
     $result = $stmt->fetch(PDO::FETCH_CLASS);
 
     if (!$result) return null;
@@ -210,6 +246,22 @@ class InitialRepository {
     $stmt->setFetchMode(PDO::FETCH_CLASS, Initial::class);
     $stmt->execute();
     return $stmt->fetchAll();
+  }
+
+  public static function delete_by_id(int $id): void {
+    $stmt =
+      self::$connection->prepare(
+        "DELETE FROM initials WHERE id = :id"
+      );
+    $stmt->execute(["id" => $id]);
+  }
+
+  public static function update(int $id, float $cash, string $date): void {
+    $stmt =
+      self::$connection->prepare(
+        "UPDATE initials SET cash = :cash, date = :date WHERE id = :id"
+      );
+    $stmt->execute(["id" => $id, "date"=>$date, "cash"=>$cash]);
   }
 }
 

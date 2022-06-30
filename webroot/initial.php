@@ -3,18 +3,50 @@ require_once "../domain/services.php";
 
 $initials = InitialRepository::get_all();
 $errors = [];
+$edit_id = null;
+
+if (isset($_GET["edit"])) {
+  $edit_id = $_GET["edit"];
+  $initial = InitialRepository::find_by_id($edit_id);
+  $date = $initial->date;
+  $cash = $initial->cash;
+}
+
 if (isset($_POST["date"]) && isset($_POST["cash"])) {
   $date = $_POST["date"];
   $cash = $_POST["cash"];
 
-  if (InitialRepository::is_date_used($date)) {
-    $errors[] = "Date is already used, pick another one";
+  if ($edit_id !== null) {
+    if ($initial->date === $date || !InitialRepository::is_date_used($date)) {
+      InitialRepository::update($edit_id, $cash, $date);
+      header("Location: /initial.php");
+      exit();
+    } else {
+      $errors[] = "Date is already used, you can only set the date to the original date or one that isn't already used.";
+    }
+
   } else {
-    InitialRepository::insert($cash, $date);
-    header("Location: /initial.php");
-    exit();
+    if (InitialRepository::is_date_used($date)) {
+      $errors[] = "Date is already used, pick another one";
+    } else {
+      InitialRepository::insert($cash, $date);
+
+      header("Location: /initial.php");
+      exit();
+    }
   }
 }
+
+if (isset($_GET["delete"])) {
+  $delete_id = $_GET["delete"];
+
+  InitialRepository::delete_by_id($delete_id);
+
+  header("Location: /initial.php");
+  exit();
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -34,7 +66,13 @@ if (isset($_POST["date"]) && isset($_POST["cash"])) {
 <body>
 <main>
   <form method="post">
-    <h2>CREATE INITIAL</h2>
+    <h2>
+      <?php if (isset($edit_id)) { ?>
+        EDIT INITIAL <?php echo $edit_id ?>
+      <?php } else { ?>
+        CREATE INITIAL
+      <?php } ?>
+    </h2>
     <label>
       Date
       <input type="date" name="date"
@@ -60,6 +98,7 @@ if (isset($_POST["date"]) && isset($_POST["cash"])) {
           <th>ID</th>
           <th>Date</th>
           <th>Cash</th>
+          <th colspan="2">Action</th>
         </tr>
         </thead>
         <tbody>
@@ -68,6 +107,8 @@ if (isset($_POST["date"]) && isset($_POST["cash"])) {
             <td><?php echo $initial->id ?></td>
             <td><?php echo $initial->date ?></td>
             <td><?php echo "PHP $initial->cash" ?></td>
+            <td><a href="?edit=<?php echo "$initial->id" ?>">EDIT</a></td>
+            <td><a href="?delete=<?php echo "$initial->id" ?>">DELETE</a></td>
           </tr>
         <?php } ?>
         </tbody>

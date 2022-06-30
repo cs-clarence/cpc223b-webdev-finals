@@ -6,17 +6,25 @@ $errors = [];
 if (isset($_GET["date"])) {
   $date = $_GET["date"];
 
-  if (ServiceForCustomerRepository::date_has_entry($date)) {
+  $initial = InitialRepository::find_by_date($date);
+  $has_entry = ServiceForCustomerRepository::date_has_entry($date);
+
+  if ($has_entry) {
     $show_results = true;
-    $initial_cash = InitialRepository::find_by_date($date)->cash;
     $number_of_customers =
       ServiceForCustomerRepository::total_number_of_customer_for_date($date);
     $income_earned =
       ServiceForCustomerRepository::total_income_earned_for_date($date);
     $total_income_earned =
       ServiceForCustomerRepository::total_income_earned($date);
-    $initial_cash = InitialRepository::find_by_date($date)->cash;
-  } else {
+  }
+
+  if ($initial !== null) {
+    $show_results = true;
+    $initial_cash = $initial->cash;
+  }
+
+  if ($initial === null && !$has_entry) {
     $errors[] = "Date has no entry";
   }
 }
