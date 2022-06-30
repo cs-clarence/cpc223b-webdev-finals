@@ -1,5 +1,4 @@
 <?php
-// new code
 require_once "../domain/services.php";
 $show_results = false;
 $errors = [];
